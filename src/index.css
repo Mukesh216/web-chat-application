@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.strok-text:hover{
+    -webkit-text-stroke: 2px #000;
+    color: transparent;
+    transition: all 0.3s ease-in-out;
+}
+
+
+.strok-text2:hover{
+    -webkit-text-stroke: 2px #fff;
+    color: transparent;
+    transition: all 0.3s ease-in-out;
+}
