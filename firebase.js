@@ -7,16 +7,21 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 
+
+
+
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBiz01b3vIMp9qSoPFLopJW1Sr6vXR13Ws",
-  authDomain: "chatapp-d719d.firebaseapp.com",
-  projectId: "chatapp-d719d",
-  storageBucket: "chatapp-d719d.appspot.com",
-  messagingSenderId: "750869219856",
-  appId: "1:750869219856:web:46e3190a35ac0ca2ddd895",
-  measurementId: "G-TYKZ5T8YWW"
-  // databaseURL: "https://chatapp-d719d-default-rtdb.firebaseio.com/"
+  apiKey: import.meta.env.VITE_FIREBASEAPIKEY ,
+  authDomain: import.meta.env.VITE_FIREBASEAUTHDOMAIN ,
+  projectId: import.meta.env.VITE_FIREBASEPROJECTID ,
+  storageBucket: import.meta.env.VITE_FIREBASESTORAGEBUCKET ,
+  messagingSenderId: import.meta.env.VITE_FIREBASEMESSAGINGSENDERID ,
+  appId: import.meta.env.VITE_FIREBASEAPPID ,
+  measurementId: import.meta.env.VITE_FIREBASEMEASUREMENTID ,
 };
+
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

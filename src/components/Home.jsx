@@ -28,6 +28,11 @@ function Home() {
     const [friendId, setFriendId] = useState("");
     const [friendProfileImg, setFriendProfileImg] = useState("");
 
+
+    // Define an environment variable for WebSocket URL
+
+
+
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
             if (user) {
@@ -40,12 +45,12 @@ function Home() {
                 setUserData(docSnap.data());
 
                 // User entry websocket connection
-                const UserEntry = new WebSocket("ws://192.168.0.101:3001");
+                const UserEntry = new WebSocket("ws://render-chat-backend.onrender.com/");
 
                 UserEntry.onopen = () => {
                     console.log("User Entry WebSocket connection opened");
                     UserEntry.send(JSON.stringify({ uid: user.uid, online: true }));
-                    setWs(UserEntry);
+                    setWs(UserEntry);   ``
                 };
 
                 UserEntry.onmessage = (event) => {
@@ -139,14 +144,14 @@ function Home() {
                     {
                         friendSelected ? (
 
-                        <div className="w-full h-full z-10">
-                            {
-                                friend &&
+                            <div className="w-full h-full z-10">
+                                {
+                                    friend &&
                                     (
                                         <Message friend={friend} friendId={friendId} friendProfileImg={friendProfileImg} friendSelected={friendSelected} userData={userData} currentUserUid={currentUser} setFriendSelect={setFriendSelected} />
-                                    ) 
-                            }
-                        </div>
+                                    )
+                                }
+                            </div>
 
                         ) : (
                             <div className="w-full h-full hidden md:flex justify-center items-center text-center bg-slate-300">

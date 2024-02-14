@@ -1,154 +1,184 @@
 // server/index.js or server/index.mjs
 import { createServer } from "http";
-import { WebSocketServer as Server } from "ws";
+// import { WebSocketServer as Server } from "ws";
 import express from "express";
 import cors from "cors";
+import path from "path";
+//dotenv
+import dotenv from "dotenv";
+dotenv.config(
+  {path:"./.env"}
+);
 
-// import admin from "firebase-admin";
-import {
-  doc,
-  setDoc,
-  getDoc,
-  collection,
-  updateDoc,
-  onSnapshot,
-} from "firebase/firestore";
-import { db } from "../firebase.js";
+
+
+
+
+import { handleWebSocketConnections } from "./server.js";
+
+// import {  doc,  setDoc,  getDoc,  collection,  updateDoc,  onSnapshot} from "firebase/firestore";
+// import { db } from "./firebase.js";
 
 
 const app = express();
 const messageServer = createServer(app);
 const presenceServer = createServer(app);
 
-const messageWss = new Server({ server: messageServer });
-const presenceWss = new Server({ server: presenceServer });
+
+// const messageWss = new Server({ server: messageServer });
+// const presenceWss = new Server({ server: presenceServer });
 
 app.use(cors());
 
+
+//configure with public folder
+
+// Assuming this code is in index.js inside the server directory
+app.use(express.static("public"));
+
+
+app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
+
+
+app.get('/', (req, res) => {
+  // Handle API request logic here
+  res.status(200).json({ message: 'Hello World' });
+});
+
+
+
+handleWebSocketConnections(messageServer, presenceServer);
+
+const MESSAGE_PORT = process.env.PORTM;
+const PRESENCE_PORT = process.env.PORTP;
+
+
+
+
 //get the reference of
 
-messageWss.on("connection", (ws) => {
-  console.log("WebSocket connection opened");
-  ws.on("message", async (message) => {
-    try {
-      const { content, senderId, receiver, receiverId , sender } = JSON.parse(message);
+// messageWss.on("connection", (ws) => {
+//   console.log("WebSocket connection opened");
+//   ws.on("message", async (message) => {
+//     try {
+//       const { content, senderId, receiver, receiverId , sender } = JSON.parse(message);
 
-      const currentDate = new Date();
-      const options = { timeZone: "Asia/Kolkata" };
-      const datePart = currentDate.toISOString().split("T")[0]; // Extract the date part
-      const timePart = currentDate.toLocaleTimeString("en-IN", { ...options, hour: "2-digit", minute: "2-digit" });
-      const time = `${datePart} ${timePart}`;
+//       const currentDate = new Date();
+//       const options = { timeZone: "Asia/Kolkata" };
+//       const datePart = currentDate.toISOString().split("T")[0]; // Extract the date part
+//       const timePart = currentDate.toLocaleTimeString("en-IN", { ...options, hour: "2-digit", minute: "2-digit" });
+//       const time = `${datePart} ${timePart}`;
 
-      // For messages sent by the sender
-      const senderDocRef = doc(db, "chats", senderId);
-      const receiverFriendDocRef = doc(collection(senderDocRef, "chatHistory"), receiver);
+//       // For messages sent by the sender
+//       const senderDocRef = doc(db, "chats", senderId);
+//       const receiverFriendDocRef = doc(collection(senderDocRef, "chatHistory"), receiver);
 
-      await addMessageToDocument(receiverFriendDocRef, sender, content);
-
-
-      const receiverDocRef = doc(db, "chats", receiverId);
-      const senderFriendDocRef = doc(collection(receiverDocRef, "chatHistory"), sender);
-
-      await addMessageToDocument(senderFriendDocRef, sender, content);
+//       await addMessageToDocument(receiverFriendDocRef, sender, content);
 
 
+//       const receiverDocRef = doc(db, "chats", receiverId);
+//       const senderFriendDocRef = doc(collection(receiverDocRef, "chatHistory"), sender);
 
-      // Send the message back to the sender (optional)
-      ws.send(JSON.stringify({ sender, receiver, content, time }));
-
-    } catch (error) {
-      console.error("Error processing message:", error);
-    }
-  });
-
-  async function addMessageToDocument(docRef, sender, content) {
-    try {
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const existingData = docSnap.data();
-        const messages = existingData.messages || [];
-        messages.push({ sender, content, timestamp: new Date().toISOString() });
-
-        // Merge the existing data with the new messages array
-        const newData = { ...existingData, messages };
-
-        await setDoc(docRef, newData);
-      }
-    } catch (error) {
-      console.error("Error adding message to document:", error);
-    }
-  }
+//       await addMessageToDocument(senderFriendDocRef, sender, content);
 
 
 
-  ws.on("close", () => {
-    console.log("WebSocket connection closed");
-  });
-});
+//       // Send the message back to the sender (optional)
+//       ws.send(JSON.stringify({ sender, receiver, content, time }));
 
-presenceWss.on("connection", (ws) => {
-  console.log("Presence WebSocket connection opened");
-  ws.on("message", async (message) => {
-      try {
-          const { uid, online } = JSON.parse(message);
-          const userDocRef = doc(db, "users", uid);
-          await updateDoc(userDocRef, { online });
+//     } catch (error) {
+//       console.error("Error processing message:", error);
+//     }
+//   });
 
-          if(!online){
-            ws.close();
-            return;
-          }
+//   async function addMessageToDocument(docRef, sender, content) {
+//     try {
+//       const docSnap = await getDoc(docRef);
+//       if (docSnap.exists()) {
+//         const existingData = docSnap.data();
+//         const messages = existingData.messages || [];
+//         messages.push({ sender, content, timestamp: new Date().toISOString() });
 
-          if (online) {
+//         // Merge the existing data with the new messages array
+//         const newData = { ...existingData, messages };
 
-            const friendUnsubscribes = []; // Array to store unsubscribe functions for friend listeners
+//         await setDoc(docRef, newData);
+//       }
+//     } catch (error) {
+//       console.error("Error adding message to document:", error);
+//     }
+//   }
+
+
+
+//   ws.on("close", () => {
+//     console.log("WebSocket connection closed");
+//   });
+// });
+
+// presenceWss.on("connection", (ws) => {
+//   console.log("Presence WebSocket connection opened");
+//   ws.on("message", async (message) => {
+//       try {
+//           const { uid, online } = JSON.parse(message);
+//           const userDocRef = doc(db, "users", uid);
+//           await updateDoc(userDocRef, { online });
+
+//           if(!online){
+//             ws.close();
+//             return;
+//           }
+
+//           if (online) {
+
+//             const friendUnsubscribes = []; // Array to store unsubscribe functions for friend listeners
         
-            const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
+//             const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
 
-                const userData = snapshot.data();
-                const friends = userData.friends || {};
+//                 const userData = snapshot.data();
+//                 const friends = userData.friends || {};
 
-                for (const friendId of Object.keys(friends)) {
-                    const friendName = friends[friendId];
+//                 for (const friendId of Object.keys(friends)) {
+//                     const friendName = friends[friendId];
 
-                    try {
+//                     try {
 
-                        const friendDocRef = doc(db, "users", friendId);
-                        const unsubscribeFriend = onSnapshot(friendDocRef, (friendSnapshot) => {
+//                         const friendDocRef = doc(db, "users", friendId);
+//                         const unsubscribeFriend = onSnapshot(friendDocRef, (friendSnapshot) => {
  
-                          const friendData = friendSnapshot.data();
-                            const isOnline = friendData ? friendData.online || false : false;
+//                           const friendData = friendSnapshot.data();
+//                             const isOnline = friendData ? friendData.online || false : false;
 
-                            ws.send(JSON.stringify({ friendName, friendId, online: isOnline }));
-                        });
+//                             ws.send(JSON.stringify({ friendName, friendId, online: isOnline }));
+//                         });
         
-                        // Add the unsubscribe function to the array
-                        friendUnsubscribes.push(unsubscribeFriend);
-                    } catch (error) {
-                        console.error("Error fetching friend data:", error);
-                    }
-                }
-            });
+//                         // Add the unsubscribe function to the array
+//                         friendUnsubscribes.push(unsubscribeFriend);
+//                     } catch (error) {
+//                         console.error("Error fetching friend data:", error);
+//                     }
+//                 }
+//             });
         
-            // Cleanup function for user snapshot listener
-            ws.on("close", () => {
-                console.log("Presence WebSocket connection closed");
-                unsubscribe(); // Unsubscribe from user snapshot listener
+//             // Cleanup function for user snapshot listener
+//             ws.on("close", () => {
+//                 console.log("Presence WebSocket connection closed");
+//                 unsubscribe(); // Unsubscribe from user snapshot listener
         
-                // Unsubscribe from all friend snapshot listeners
-                friendUnsubscribes.forEach((unsubscribeFriend) => unsubscribeFriend());
-            });
-        }
+//                 // Unsubscribe from all friend snapshot listeners
+//                 friendUnsubscribes.forEach((unsubscribeFriend) => unsubscribeFriend());
+//             });
+//         }
         
-      } catch (error) {
-          console.error("Error processing presence update:", error);
-      }
-  });
-});
+//       } catch (error) {
+//           console.error("Error processing presence update:", error);
+//       }
+//   });
+// });
 
 
-const PRESENCE_PORT = 3001;
-const MESSAGE_PORT = 3002;
 
 messageServer.listen(MESSAGE_PORT, "0.0.0.0", () => {
   console.log(`WebSocket server is listening on port ${MESSAGE_PORT}`);
@@ -157,3 +187,13 @@ messageServer.listen(MESSAGE_PORT, "0.0.0.0", () => {
 presenceServer.listen(PRESENCE_PORT, "0.0.0.0", () => {
   console.log(`WebSocket server is listening : USER ENTRY  ${PRESENCE_PORT}`);
 });
+
+
+
+
+
+
+
+
+
+
