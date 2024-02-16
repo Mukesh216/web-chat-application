@@ -77,7 +77,7 @@ export function handleWebSocketConnections(messageServer, presenceServer) {
   });
 
   presenceWss.on("connection", (ws) => {
-    console.log("Presence WebSocket connection opened");
+    console.log("Presence WebSocket connection opened ..");
     ws.on("message", async (message) => {
       try {
         const { uid, online } = JSON.parse(message);
