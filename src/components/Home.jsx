@@ -41,7 +41,7 @@ function Home() {
                 setUserData(docSnap.data());
 
                 // User entry websocket connection
-                const UserEntry = new WebSocket("wss://render-chat-backend.onrender.com");
+                const UserEntry = new WebSocket("ws://localhost:3000");
 
                 UserEntry.onopen = () => {
                     console.log("User Entry WebSocket connection opened");
@@ -122,12 +122,12 @@ function Home() {
 
 
     return (
-        <div className="flex h-screen">
+        <div className="flex h-screen w-full">
 
-            <div className="w-full bg-black lg:grid grid-cols-5 xl:grid-cols-4">
+            <div className="w-full bg-black relative lg:grid grid-cols-5 xl:grid-cols-4">
 
                 {/* Sidebar */}
-                <div className="w-full h-full flex col-span-2 xl:col-span-1 relative z-">
+                <div className="w-full h-full flex col-span-2 xl:col-span-1 ">
 
                     <div className="w-full h-full ">
 
@@ -143,7 +143,7 @@ function Home() {
 
 
                 {/* Main content */}
-                <div className="hidden lg:block col-span-3 xl:col-span-3 h-full ">
+                <div className="hidden lg:block col-span-3 xl:col-span-3 h-full w-full">
                     {
                         friendSelected ? (
 
@@ -177,7 +177,7 @@ function Home() {
 
                 {
                     friendSelected &&
-                    <div className="absolute top-0 left-0 w-full h-full block lg:hidden">
+                    <div className=" w-full h-full absolute left-0 top-0 block lg:hidden">
 
                         <div className=" h-full">
 

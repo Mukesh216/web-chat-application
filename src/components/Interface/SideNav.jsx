@@ -533,8 +533,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                             <img src={photoURL} alt="dp" className="w-full h-full rounded-full object-cover" />
                         </div>
 
-                        <div className="fixed bottom-0 left-0">
-                            {/* signout button */}
+                        {/* <div className="fixed bottom-0 left-0">
 
                             <div className="flex flex-col h-fit pb-4 space-y-8 ps-2">
 
@@ -564,7 +563,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
 
                             </div>
 
-                        </div>
+                        </div> */}
 
 
                         <div className="space-y-6 ">
