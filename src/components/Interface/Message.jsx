@@ -116,10 +116,10 @@ const Message = ({ friend, friendId, friendProfileImg, friendSelected, userData,
 
 
                     //create websocket connection
-                    const ws = new WebSocket("wss://render-chat-backend.onrender.com");
+                    const ws = new WebSocket("wss://render-chat-backend.onrender.com:3002");
 
                     ws.onopen = () => {
-                        console.log("WebSocket connection opened");
+                        console.log("WebSocket connection opened for messaging");
                         // Once the connection is open, send a message to the server indicating the friend selected
                     };
 
