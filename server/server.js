@@ -25,7 +25,7 @@ export function handleWebSocketConnections(messageServer, presenceServer) {
         });
         const time = `${datePart} ${timePart}`;
 
-        // For messages sent by the sender
+        // For messages sent by the sender  
         const senderDocRef = doc(db, "chats", senderId);
         const receiverFriendDocRef = doc(
           collection(senderDocRef, "chatHistory"),
