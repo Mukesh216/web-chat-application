@@ -116,7 +116,7 @@ const Message = ({ friend, friendId, friendProfileImg, friendSelected, userData,
 
 
                     //create websocket connection
-                    const ws = new WebSocket("ws://192.168.0.101:3002");
+                    const ws = new WebSocket("wss://render-chat-backend.onrender.com");
 
                     ws.onopen = () => {
                         console.log("WebSocket connection opened");

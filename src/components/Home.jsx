@@ -55,7 +55,7 @@ function Home() {
                 UserEntry.onopen = () => {
                     console.log("User Entry WebSocket connection opened");
                     UserEntry.send(JSON.stringify({ uid: user.uid, online: true }));
-                    setWs(UserEntry);   ``
+                    setWs(UserEntry);  
                 };
 
                 UserEntry.onmessage = (event) => {
