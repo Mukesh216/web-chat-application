@@ -17,7 +17,7 @@ export function handleWebSocketConnections(server) {
 
     ws.on("message", async (message) => {
       try {
-        const { type, data } = JSON.parse(message);
+        const {  type, data } = JSON.parse(message);
         console.log("Received message:", data);
 
         if (type === "presence") {

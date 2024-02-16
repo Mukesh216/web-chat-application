@@ -545,7 +545,8 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
 
                                         if (currentUser) {
                                             // Send online status as false to backend
-                                            ws.send(JSON.stringify({ uid: currentUser.uid, online: false }));
+                                            const data = { uid: currentUser.uid, online: false };
+                                            ws.send(JSON.stringify({ data: data, type: "presence"}));
                                         }
                                         // Sign out the user
                                         await auth.signOut();
