@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import { auth } from "../../firebase";
 
-import { doc, getDoc, getDocs, query, collection, where, setDoc, updateDoc, arrayUnion, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 
 import { db } from "../../firebase";
 import SideNav from "./Interface/SideNav";
@@ -43,14 +43,10 @@ function Home() {
                 // User entry websocket connection
                 const UserEntry = new WebSocket("wss://render-chat-backend.onrender.com");
 
-
-                // const protocol = window.location.protocol.includes('https') ? 'wss' : 'ws'
-                // const UserEntry = new WebSocket(`{${protocol}://render-chat-backend.onrender.com/}`);
-
-
                 UserEntry.onopen = () => {
                     console.log("User Entry WebSocket connection opened");
-                    UserEntry.send(JSON.stringify({ uid: user.uid, online: true, type: "presence" }));
+                    const data = { uid: user.uid, online: true};
+                    UserEntry.send(JSON.stringify({ data: data,  type: "presence" }));
                     setWs(UserEntry);  
                 };
 

@@ -86,7 +86,8 @@ const Message = ({ friend, friendId, friendProfileImg, friendSelected, userData,
         if (ws && newMessage.trim() !== "") {
             console.log("Sending message: " + friend);
             // Send the message to the WebSocket server
-            ws.send(JSON.stringify({ type: 'message', content: newMessage, senderId: currentUser.uid, receiver: friend, receiverId: friendId, sender: currUserName }));
+            const data = { content: newMessage, senderId: currentUser.uid, receiver: friend, receiverId: friendId, sender: currUserName };
+            ws.send(JSON.stringify({ type: 'message', data: data }));
         }
         setNewMessage("");
     };
