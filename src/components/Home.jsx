@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
 
-import { MdLogout } from "react-icons/md";
-
-
 import { auth } from "../../firebase";
 
 import { doc, getDoc, getDocs, query, collection, where, setDoc, updateDoc, arrayUnion, onSnapshot } from "firebase/firestore";
@@ -10,7 +7,6 @@ import { doc, getDoc, getDocs, query, collection, where, setDoc, updateDoc, arra
 import { db } from "../../firebase";
 import SideNav from "./Interface/SideNav";
 import Message from "./Interface/Message";
-import PresenceUpdate from "./PresenceUpdate";
 
 function Home() {
 
@@ -45,7 +41,7 @@ function Home() {
                 setUserData(docSnap.data());
 
                 // User entry websocket connection
-                const UserEntry = new WebSocket("wss://54.254.162.138:3001");
+                const UserEntry = new WebSocket("wss://render-chat-backend.onrender.com:3001");
 
 
                 // const protocol = window.location.protocol.includes('https') ? 'wss' : 'ws'
