@@ -39,8 +39,7 @@ export function handleWebSocketConnections(server) {
 
 async function handleMessage(data, ws) {
   try {
-    const { content, senderId, receiver, receiverId, sender } =
-      JSON.parse(message);
+    const { content, senderId, receiver, receiverId, sender } =data;
 
     const currentDate = new Date();
     const options = { timeZone: "Asia/Kolkata" };
@@ -100,7 +99,7 @@ async function addMessageToDocument(docRef, sender, content) {
 
 async function handlePresence(data, ws) {
   try {
-    const { uid, online } = JSON.parse(message);
+    const { uid, online } =  data;
     const userDocRef = doc(db, "users", uid);
     await updateDoc(userDocRef, { online });
 
