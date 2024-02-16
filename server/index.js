@@ -1,9 +1,8 @@
 // server/index.js or server/index.mjs
-import { createServer } from "http";
+import { createServer } from "https";
 // import { WebSocketServer as Server } from "ws";
 import express from "express";
 import cors from "cors";
-import path from "path";
 //dotenv
 import dotenv from "dotenv";
 dotenv.config(
@@ -41,11 +40,11 @@ const MESSAGE_PORT = process.env.PORTM;
 const PRESENCE_PORT = process.env.PORTP;
 
 
-messageServer.listen(MESSAGE_PORT, "0.0.0.0", () => {
+messageServer.listen(MESSAGE_PORT,  () => {
   console.log(`WebSocket server is listening on port ${MESSAGE_PORT}`);
 });
 
-presenceServer.listen(PRESENCE_PORT, "0.0.0.0", () => {
+presenceServer.listen(PRESENCE_PORT, () => {
   console.log(`WebSocket server is listening : USER ENTRY  ${PRESENCE_PORT}`);
 });
 
