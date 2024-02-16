@@ -58,6 +58,12 @@ function Home() {
                     }));
                 };
 
+                UserEntry.onclose = () => {
+                    console.log("User Entry WebSocket connection closed");
+                    const data = { uid: user.uid, online: false };
+                    UserEntry.send(JSON.stringify({ data: data, type: "presence" }));
+                }
+
                 const unsubscribeUserData = onSnapshot(docRef, (doc) => {
                     setUserData(doc.data());
                 });

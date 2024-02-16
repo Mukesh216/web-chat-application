@@ -133,7 +133,10 @@ const Message = ({ friend, friendId, friendProfileImg, friendSelected, userData,
 
 
                     ws.onclose = () => {
+
                         console.log("WebSocket connection closed");
+                        const data = { uid: currentUser.uid, online: false };
+                        ws.send(JSON.stringify({ data: data, type: "presence" }));
                     };
 
                     // Store the WebSocket connection in state

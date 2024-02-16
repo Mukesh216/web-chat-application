@@ -11,7 +11,7 @@ import { FaRegBell } from "react-icons/fa";
 import { HiSearch, HiOutlinePlus } from "react-icons/hi";
 
 
-import { doc, getDoc, getDocs, query, collection, where, setDoc, updateDoc, arrayUnion, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, getDocs, query, collection, where, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { auth, storage } from "../../../firebase";
 
