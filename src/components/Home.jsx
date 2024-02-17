@@ -41,7 +41,7 @@ function Home() {
                 setUserData(docSnap.data());
 
                 // User entry websocket connection
-                const UserEntry = new WebSocket("ws://localhost:3000");
+                const UserEntry = new WebSocket("wss://render-chat-backend.onrender.com");
 
                 UserEntry.onopen = () => {
                     console.log("User Entry WebSocket connection opened");
