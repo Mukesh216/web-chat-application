@@ -4,7 +4,6 @@ import { Route, Routes } from "react-router"
 
 import Home from "./components/Home"
 import Landing from "./components/Landing"
-import Test from "./components/Test"
 
 
 

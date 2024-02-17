@@ -44,7 +44,6 @@ function Home() {
                 const UserEntry = new WebSocket("wss://render-chat-backend.onrender.com");
 
                 UserEntry.onopen = () => {
-                    console.log("User Entry WebSocket connection opened");
                     const data = { uid: user.uid, online: true};
                     UserEntry.send(JSON.stringify({ data: data,  type: "presence" }));
                     setWs(UserEntry);  
@@ -59,7 +58,6 @@ function Home() {
                 };
 
                 UserEntry.onclose = () => {
-                    console.log("User Entry WebSocket connection closed");
                     const data = { uid: user.uid, online: false };
                     UserEntry.send(JSON.stringify({ data: data, type: "presence" }));
                 }

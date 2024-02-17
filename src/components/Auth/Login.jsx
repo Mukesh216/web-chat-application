@@ -61,14 +61,12 @@ const Login = () => {
       // The signed-in user info.
       const user = result.user;
 
-     console.log("success");
 
      window.location.href = '/home';
 
       // IdP data available using getAdditionalUserInfo(result)
       // ...
 
-      console.log('Google Sign-In successful:', user);
     } catch (error) {
       // Handle Errors here.
       const errorCode = error.code;

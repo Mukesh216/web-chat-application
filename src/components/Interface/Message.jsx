@@ -44,7 +44,6 @@ const Message = ({ friend, friendId, friendProfileImg, friendSelected, userData,
                             chatHistoryData[doc.id] = doc.data();
                         });
                         setChats(chatHistoryData);
-                        console.log("Chat history fetched", chatHistoryData);
                     }
                 } else {
                     console.log("Chat document does not exist");
@@ -61,7 +60,6 @@ const Message = ({ friend, friendId, friendProfileImg, friendSelected, userData,
                         updatedChats[doc.id] = doc.data();
                     });
                     setChats(updatedChats);
-                    console.log("Chat history updated", updatedChats);
                 });
 
                 const unsubscribeUserData = onSnapshot(doc(db, "users", currentUser.uid), (doc) => {
@@ -84,7 +82,6 @@ const Message = ({ friend, friendId, friendProfileImg, friendSelected, userData,
     const sendMessage = (newMessage) => {
 
         if (ws && newMessage.trim() !== "") {
-            console.log("Sending message: " + friend);
             // Send the message to the WebSocket server
             const data = { content: newMessage, senderId: currentUser.uid, receiver: friend, receiverId: friendId, sender: currUserName };
             ws.send(JSON.stringify({ type: 'message', data: data }));
@@ -124,12 +121,7 @@ const Message = ({ friend, friendId, friendProfileImg, friendSelected, userData,
                         // Once the connection is open, send a message to the server indicating the friend selected
                     };
 
-                    ws.onmessage = (event) => {
-                        console.log("WebSocket message received");
-                        const receivedMessage = JSON.parse(event.data);
-                        console.log("receivedMessage = ", receivedMessage);
-                        // setChats((prevChats) =>[prevChats, receivedMessage]);
-                    };
+                   
 
 
                     ws.onclose = () => {
@@ -169,7 +161,6 @@ const Message = ({ friend, friendId, friendProfileImg, friendSelected, userData,
 
 
     const handleBackClick = () => {
-        console.log(currentUser.providerData[0].photoURL);
         setFriendSelect(false);
     }
 
@@ -196,21 +187,21 @@ const Message = ({ friend, friendId, friendProfileImg, friendSelected, userData,
                                     <MdKeyboardBackspace className="text-2xl text-black cursor-pointer " onClick={handleBackClick} />
                                 </button>
 
-                                <div className="flex justify-center items-center ">
+                                <div className="flex justify-center items-center w-full ">
                                     <img
                                         className="w-10 h-10 rounded-full me-4 object-contain"
                                         src={friendProfileImg}
                                         alt=""
 
                                     />
-                                    <h1 className="text-md md:text-lg lg:text-xl font-bold font-serif text-black uppercase">{friend}</h1>
+                                    <h1 className="text-md md:text-lg lg:text-xl font-bold font-serif text-black uppercase truncate">{friend}</h1>
                                 </div>
 
                             </div>
 
                             <div className="flex w-fit justify-end items-center ms-auto">
 
-                                <div className="flex rounded-md divide-x  sm:me-4 md:me-6 lg:me-8 hover:divide-gray-600 bg-gray-300 overflow-hidden">
+                                <div className="flex rounded-md divide-x me-4 md:me-6 lg:me-8 hover:divide-gray-600 bg-gray-300 overflow-hidden">
 
                                     <button className="px-2 py-1 sm:px-4 sm:py-2 hover:bg-cyan-400 hover:text-white  transition ease-in-out duration-300">
                                         <IoVideocamOutline className="text-2xl md:text-3xl" />
