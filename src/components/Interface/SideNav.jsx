@@ -36,6 +36,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
 
     const [addFriendModal, setAddFriendModal] = useState(false);
     const [showFriendRequestModal, setShowFriendRequestModal] = useState(false);
+    const [showInfoModal, setShowInfoModal] = useState(false);
 
 
 
@@ -505,7 +506,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
 
                 setSendingRequest(false);
                 alert("Request sent successfully");
-                
+
                 setRecipientEmail("");
                 setAddFriendModal(false);
 
@@ -603,7 +604,9 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                                 </button>
 
 
-                                <button className="w-6  h-6 hover:bg-cyan-500 border-cyan-400 hover:border rounded-full text-white hover:text-black">
+                                <button className="w-6  h-6 hover:bg-cyan-500 border-cyan-400 hover:border rounded-full text-white hover:text-black"
+                                    onClick={() => setShowInfoModal(true)}
+                                >
                                     <IoInformationCircle className="w-full h-full" />
                                 </button>
 
@@ -778,7 +781,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
 
 
                 {showSettings && (
-                    <div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50 "
+                    <div className="fixed inset-0 backdrop-filter backdrop-blur-sm flex justify-center items-center bg-gray-900 bg-opacity-50 "
                     >
                         <div className="bg-gray-900 h-fit absolute bottom-54 md:bottom-1 md:left-1 rounded-md md:h-1/2  w-11/12 sm:w-9/12 md:w-96  ">
 
@@ -945,7 +948,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                 {/* Friend Request Modal */}
 
                 {showFriendRequestModal && (
-                    <div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50"
+                    <div className="fixed inset-0 backdrop-filter backdrop-blur-sm flex justify-center items-center bg-gray-900 bg-opacity-50"
                     >
                         <div className="bg-gradient-to-b from-slate-200 from-40% via-cyan-600  to-cyan-900 p-4 rounded-lg h-96 w-96 lg:w-1/3">
                             <div className="w-6 h-6 ms-auto rounded-sm text-red-500 hover:bg-red-500 hover:text-white transition-all ease-in-out duration-150 cursor-pointer                            ">
@@ -988,7 +991,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                 {/* Add friend modal */}
 
                 {addFriendModal && (
-                    <div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50"
+                    <div className="fixed inset-0 backdrop-filter backdrop-blur-sm flex justify-center items-center bg-gray-900 bg-opacity-50"
                     >
                         <div className="p-4 bg-gradient-to-b from-slate-200 from-40% via-cyan-600  to-cyan-900 shadow-sm shadow-cyan-400 rounded-lg h-96 w-96 lg:w-1/3 ">
                             <div className="w-6 h-6 ms-auto  rounded-sm text-red-500 hover:bg-red-500 hover:text-white transition-all ease-in-out duration-150 cursor-pointer">
@@ -1013,14 +1016,14 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                                         <button
                                             className="w-full h-10 bg-green-500 text-white font-bold tracking-wide active:bg-green-600 active:text-white transition-all ease-in-out duration-200 rounded-sm hover:shadow-lg shadow-black hover:border border-green-500 hover:bg-white hover:text-green-500 hover:cursor-pointer"
                                             onClick={sendRequest}>
-                                                {
-                                                    sendingRequest ? (
-                                                        "SENDING REQUEST ..."
-                                                    ) : (
-                                                        "SEND REQUEST"
-                                                    )
-                                                }
-                                            </button>
+                                            {
+                                                sendingRequest ? (
+                                                    "SENDING REQUEST ..."
+                                                ) : (
+                                                    "SEND REQUEST"
+                                                )
+                                            }
+                                        </button>
                                     </div>
 
                                 </div>
@@ -1029,10 +1032,158 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                     </div>
                 )}
 
+                {/* info button modal */}
+
+                {showInfoModal && (
+                    <div className="fixed  inset-0 backdrop-filter backdrop-blur-sm flex justify-center items-center bg-gray-900 bg-opacity-20 p-2"
+                    >
+                        
+                        <div className=" shadow-sm shadow-green-600 overflow-hidden py-2 md:p-4 h-2/3 w-96 lg:h-3/4 lg:w-2/3 bg-gradient-to-r from-5% from-slate-200 via-slate-600 to-gray-900 relative touch-none"
+                        >
+                            <div className="w-6 h-6 ms-auto rounded-sm text-red-500 hover:bg-red-500 hover:text-white transition-all ease-in-out duration-150 cursor-pointer">
+                                <RxCross2 className="w-full h-full " onClick={() => setShowInfoModal(false)} />
+                            </div>
+
+                            <p className="absolute top-1 left-2 font-bold text-gray-600 underline">This website is built with 🖤 by,</p>
+
+                            <div className="text-center space-y-2 w-full h-full overflow-hidden py-2 lg:px-4 px-1 ">
+
+                                <div className="px-2 w-full flex md:flex-row flex-col  text-center justify-center items-center bg-gray-900 text-white py-4 md:rounded-md shadow-sm shadow-green-300 border-2 border-green-500  relative"
+                                >
+                                    <img src="https://res.cloudinary.com/dfsvudyfv/image/upload/v1708204036/WhatsApp_Image_2024-02-17_at_23.51.24_2a44ad68-removebg-preview_i4440k.png" 
+                                        className="rounded-full select-none w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 border-2 object-cover text-center md:absolute left-44 " alt="My_img"
+                                        onContextMenu={(e) => e.preventDefault()} />
+                                    <div className="space-y-2 mt-4">
+                                        <h1 className="font-semibold text-lg tracking-wider ">MUKESH S</h1>
+                                        <h3 className="font-bold text-xl pb-2 lg:text-2xl">WEB DESIGN & DEVELOPER</h3>
+                                        <p className="font-semibold text-md text-gray-400 ">
+                                            SRI KRISHNA COLLEGE OF ENGINEERING AND TECHNOLOGY
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="w-full h-full text-left overflow-y-auto ">
+
+                                    <div
+                                        className="py-4 px-2 grid grid-cols-2 h-fit w-full mb-8">
+
+                                        <div className=" " >
+                                            <p className="font-semibold text-xl mb-2">TECH STACK USED:</p>
+
+                                            <div className="">
+                                                <p className="border-b-2 border-green-500 w-fit font-bold text-black">BACKEND</p>
+                                                <ul className="p-4 space-y-2">
+                                                    <li className="font-semibold font-mono">
+                                                        FIREBASE <span className=" font-normal ms-2 text-md">User auth, Conversation handlers, Online presence notify in real-time, Database</span>
+                                                    </li>
+                                                    <li className="font-semibold font-mono">
+                                                        NODE JS <span className=" font-normal ms-2 text-md">Backend server environment</span>
+                                                    </li>
+                                                    <li className="font-semibold font-mono">
+                                                        EXPRESS JS <span className=" font-normal ms-2 text-md">App server & route handler </span>
+                                                    </li>
+                                                    <li className="font-semibold font-mono">
+                                                        WEBSOCKETS <span className=" font-normal ms-2 text-md">Socket connections and Conversation listeningserver</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <p className="border-b-2 border-green-500 w-fit font-bold text-black"> FRONTEND</p>
+                                                <ul className="p-4 space-y-2">
+                                                    <li className="font-semibold font-mono">
+                                                        REACT JS LIBRARY <span className="ms-2 text-md font-normal ">Frontend Framework</span>
+                                                    </li>
+                                                    <li className="font-semibold font-mono">
+                                                        FIREBASE <span className="ms-2 text-md font-normal">Auth state handler, Build tools for conversations, User options</span>
+                                                    </li>
+                                                    <li className="font-semibold font-mono">
+                                                        TAILWIND CSS <span className="ms-2 text-md font-normal">UI responsive design and colorschemes</span>
+                                                    </li>
+                                                    <li className="font-semibold font-mono">
+                                                        VITE <span className="ms-2 text-md font-normal">Development server</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div className="text-white  space-y-6">
+                                            <p className="font-semibold text-xl mb-2">TECH STACK OVERVIEW:</p>
+
+                                            <div className="mb-2 text-center">
+                                                <div className="flex items-center justify-center space-x-4 mb-2">
+                                                    <h1 className="font-bold">REACT JS</h1>
+                                                    <img src="" alt="react" className="w-6 h-6 bg-white rounded-full" />
+                                                </div>
+                                                <p className="w-11/12 text-gray-200">
+                                                    JavaScript library for building user interfaces.
+                                                    Component-based architecture for modular and reusable UI development.
+                                                    Efficient updates through Virtual DOM and support for server-side rendering.
+                                                </p>
+                                            </div>
+
+                                            <div className="mb-2 text-center">
+                                                <div className="flex items-center justify-center space-x-4 mb-2">
+                                                    <h1 className="font-bold">FIREBASE</h1>
+                                                    <img src="" alt="react" className="w-6 h-6 bg-white rounded-full" />
+                                                </div>
+                                                <p className="w-11/12 text-gray-200">
+                                                    Google&apos;s platform for mobile and web app development.
+                                                    Services include real-time database, authentication, hosting, and cloud functions.
+                                                    Enables real-time data synchronization, secure user authentication, and scalable database solutions.
+                                                </p>
+                                            </div>
+
+                                            <div className="mb-2 text-center">
+                                                <div className="flex items-center justify-center space-x-4 mb-2">
+                                                    <h1 className="font-bold">WEBSOCKETS</h1>
+                                                    <img src="" alt="react" className="w-6 h-6 bg-white rounded-full" />
+                                                </div>
+
+                                                <p className="w-11/12 text-gray-200">
+                                                    Communication protocol providing full-duplex channels over a single TCP connection.
+                                                    Enables real-time, bidirectional data transfer between clients and servers.
+                                                    Ideal for applications requiring frequent updates or real-time interactions like chat apps and online gaming.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="w-11/12 h-fit py-8 font-mono space-y-6 mx-auto h-ful text-white px-8 bg-gray-900 rounded-md ">
+                                        <p className="font-bold ">PROJECT OVERVIEW:</p>
+                                        <p className="indent-8">
+                                            In this project, I&apos;ve harnessed a powerful tech stack to develop a versatile and efficient web chat application, complete with real-time communication capabilities. The frontend is powered by React.js, a dynamic JavaScript library renowned for its component-based architecture, fostering code reusability and scalability. To streamline development, I&apos;ve adopted Vite.js, a modern build tool known for its efficiency.
+
+                                        </p>
+                                        <p className="indent-8">
+                                            On the backend, Node.js serves as the foundation, offering scalability and performance. Leveraging Express.js, a minimalist web framework, I&apos;ve rapidly developed APIs with intuitive routing and middleware support. WebSocket communication, facilitated by the ws library, enables seamless real-time bidirectional data transfer between clients and the server, essential for instant messaging functionality.
+                                            <br />
+                                        </p>
+                                        <p className="indent-8">
+                                            For data management, Firebase Firestore, a flexible NoSQL database, ensures seamless synchronization and offline support. Additionally, Firebase Authentication guarantees secure user login, while Firebase Storage efficiently handles file uploads and downloads.
+                                            <br />
+                                        </p>
+                                        <p className="indent-8">
+                                        The application is hosted on Vercel and Netlify, renowned for their reliability and seamless deployment processes. With built-in CI/CD pipelines, updates are effortlessly deployed, ensuring scalability and uninterrupted service. By integrating these technologies, the project delivers a responsive, secure, and scalable web chat application, tailored to modern communication needs.
+
+                                        </p>
+                                    </div>
+
+                                    <div className="h-44"></div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                )}
+
             </div>
 
 
-        </div>
+        </div >
     )
 }
 
