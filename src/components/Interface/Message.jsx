@@ -184,7 +184,7 @@ const Message = ({ friend, friendId, friendProfileImg, friendSelected, userData,
             {
                 friendSelected && (
 
-                    <div className="w-full h-full  overflow-hidden flex  flex-col justify-center">
+                    <div className="w-full h-full bg-gray-700 overflow-hidden flex  flex-col justify-center">
 
                         {/* header */}
 
@@ -229,6 +229,9 @@ const Message = ({ friend, friendId, friendProfileImg, friendSelected, userData,
                             </div>
 
                         </div>
+
+
+                        {/* conversation */}
 
                         <div className="w-full text-white overflow-y-auto"
                             style={{

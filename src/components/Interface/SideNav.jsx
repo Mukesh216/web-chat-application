@@ -53,9 +53,15 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
             : []
     );
 
+    const [searchTerm, setSearchTerm] = useState("");
 
+    const filteredFriends = localFriends.filter(friend =>
+        friend.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-
+    const handleSearchInputChange = event => {
+        setSearchTerm(event.target.value);
+    };
 
 
 
@@ -85,11 +91,8 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
 
 
 
-    const [image, setImage] = useState(null);
-
     const handleImageChange = async (e) => {
         const file = e.target.files[0];
-        setImage(file);
         await handleUploadImage(file);
     };
 
@@ -99,6 +102,9 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
         const pendingRequests = Object.values(friendRequests)?.filter(request => request.status === "pending") || [];
         setLocalFriendRequests(pendingRequests);
     }, [friendRequests]);
+
+
+    const [sendingRequest, setSendingRequest] = useState(false);
 
 
 
@@ -469,6 +475,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
 
 
         try {
+            setSendingRequest(true);
             const usersRef = collection(db, "users");
             const recipientQuery = query(usersRef, where("email", "==", recipientEmail));
             const recipientSnapshot = await getDocs(recipientQuery);
@@ -496,8 +503,9 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                 });
 
 
+                setSendingRequest(false);
                 alert("Request sent successfully");
-
+                
                 setRecipientEmail("");
                 setAddFriendModal(false);
 
@@ -505,7 +513,8 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
 
 
             else {
-                console.log("Recipient does not exist");
+                alert(" Friend with provided email not found");
+                setSendingRequest(false);
             }
         }
 
@@ -527,46 +536,14 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
 
                 <div className="w-16 fixed left-0 bg-gray-900 h-full pt-32">
 
-                    <div className="w-full px-2 overflow-hidden">
+                    <div className="w-full px-2 overflow-hidden h-full relative">
 
                         <div className="w-12 h-12 border-2 border-green-400  mx-auto bg-black rounded-full mb-12 ">
                             <img src={photoURL} alt="dp" className="w-full h-full rounded-full object-cover" />
                         </div>
 
-                        {/* <div className="fixed bottom-0 left-0">
 
-                            <div className="flex flex-col h-fit pb-4 space-y-8 ps-2">
-
-                                <button onClick={async () => {
-                                    try {
-
-                                        window.confirm("Are you sure you want to logout out?");
-
-                                        if (currentUser) {
-                                            // Send online status as false to backend
-                                            const data = { uid: currentUser.uid, online: false };
-                                            ws.send(JSON.stringify({ data: data, type: "presence"}));
-                                        }
-                                        // Sign out the user
-                                        await auth.signOut();
-                                    } catch (error) {
-                                        console.error("Error signing out:", error);
-                                    }
-                                }} className=" transform rotate-180 cursor-pointer hover:bg-red-500  text-white w-fit p-2 rounded-md">
-                                    <MdLogout className="w-6 h-6" />
-                                </button>
-
-
-                                <button className="p-2 ms-1">
-                                    <IoInformationCircle className="w-6 mx- h-6 text-white" />
-                                </button>
-
-                            </div>
-
-                        </div> */}
-
-
-                        <div className="space-y-6 ">
+                        <div className="space-y-6">
 
                             <button className="w-full h-10 p-2 mx-auto hover:bg-gray-700 hover:cursor-pointer rounded-md transition-all ease-in-out duration-300 text-white  hover:text-green-600"
                                 onClick={() => setSelector("chats")}
@@ -602,7 +579,37 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
 
                         </div>
 
+                        <div className="absolute bottom-0 left-0 pb-8 w-full">
 
+                            <div className="flex flex-col h-fit justify-center items-center space-y-8  w-full">
+
+                                <button onClick={async () => {
+                                    try {
+
+                                        window.confirm("Are you sure you want to logout out?");
+
+                                        if (currentUser) {
+                                            // Send online status as false to backend
+                                            const data = { uid: currentUser.uid, online: false };
+                                            ws.send(JSON.stringify({ data: data, type: "presence" }));
+                                        }
+                                        // Sign out the user
+                                        await auth.signOut();
+                                    } catch (error) {
+                                        console.error("Error signing out:", error);
+                                    }
+                                }} className=" transform rotate-180 cursor-pointer hover:bg-red-500  text-white w-fit p-2 rounded-md">
+                                    <MdLogout className="w-6 h-6" />
+                                </button>
+
+
+                                <button className="w-6  h-6 hover:bg-cyan-500 border-cyan-400 hover:border rounded-full text-white hover:text-black">
+                                    <IoInformationCircle className="w-full h-full" />
+                                </button>
+
+                            </div>
+
+                        </div>
 
                     </div>
                 </div>
@@ -610,13 +617,13 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
 
                 {/* side nav section */}
 
-                <div className="w-full h-full flex flex-col text-center pt-6 ps-16  bg-gray-800 ">
+                <div className="w-full h-full flex flex-col text-center ps-16  bg-gray-800 ">
 
                     <div className="w-full h-full overflow-hidden">
 
                         <div className="h-auto w-full">
 
-                            <p className="text-white mb-4 text-left font-bold px-2 tracking-wider text-lg pb-1 border-0 border-b border-green-300 shadow-green-400 shadow-sm  ">CHAT-RT</p>
+                            <p className="h-16 align-baseline  text-white mb-4 text-left pt-6 font-bold px-2 tracking-wider text-lg border-0 border-b border-green-300 shadow-green-400 shadow-sm">CHAT-RT</p>
 
                             <div className="w-full px-2 py-1 mb-2 ">
 
@@ -670,7 +677,13 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
 
                             <div className="w-11/12 mx-auto h-10 bg-gray-700 flex items-center justify-center rounded-md px-2 border-0 border-b border-green-500">
 
-                                <input type="text" className="w-11/12 h-full bg-gray-700 text-white px-2 focus:outline-none" placeholder="Search chats.." />
+                                <input
+                                    type="text"
+                                    className="w-11/12 h-full bg-gray-700 text-white px-2 focus:outline-none"
+                                    value={searchTerm}
+                                    onChange={handleSearchInputChange}
+                                    placeholder="Search chats.."
+                                />
                                 <button className="w-1/12 h-full px-1 bg-gray-700 text-white hover:text-green-500 hover:cursor-pointer">
                                     <HiSearch className="w-full h-full" />
                                 </button>
@@ -684,7 +697,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
 
                         {/* Friends List */}
 
-                        <div className="h-full  overflow-y-auto px-2 sm:px-4 md:px-6 pt-2 ">
+                        <div className="h-full relative  overflow-y-auto px-2 sm:px-4 md:px-6 pt-2 ">
 
                             <div className=" text-white w-full h-full">
 
@@ -726,7 +739,28 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                                 </div>
                             </div>
 
+                            {/* Display filtered friends */}
+                            {searchTerm && (
+                                <div className="absolute top-0 left-0 w-full h-full py-2 overflow-hidden">
+                                    <div className="w-full bg-gray-600 bg-opacity-20 h-full backdrop-filter backdrop-blur-lg p-4 overflow-y-auto">
+                                        {filteredFriends.length > 0 ? (
+                                            filteredFriends.map(friend => (
+                                                <div key={friend.id} className="flex w-full h-16 opacity-100 px-8 text-white font-bold uppercase items-center">
+                                                    <img src={friend.photoURL} className="w-12 h-12 rounded-full bg-cover me-8" alt={friend.name} />
+                                                    <span>{friend.name}</span>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <p className="text-white">No matching friends found</p>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+
                         </div>
+
+
+
 
                     </div>
                 </div>
@@ -913,7 +947,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                 {showFriendRequestModal && (
                     <div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50"
                     >
-                        <div className="bg-gradient-to-b from-slate-200 from-40% via-cyan-700  to-blue-950 p-4 rounded-lg h-96 w-96">
+                        <div className="bg-gradient-to-b from-slate-200 from-40% via-cyan-600  to-cyan-900 p-4 rounded-lg h-96 w-96 lg:w-1/3">
                             <div className="w-6 h-6 ms-auto rounded-sm text-red-500 hover:bg-red-500 hover:text-white transition-all ease-in-out duration-150 cursor-pointer                            ">
                                 <RxCross2 className="w-full h-full " onClick={() => setShowFriendRequestModal(false)} />
                             </div>
@@ -956,7 +990,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                 {addFriendModal && (
                     <div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50"
                     >
-                        <div className="p-4 bg-gradient-to-b from-slate-200 from-40% via-cyan-700  to-blue-950 rounded-lg h-96 w-96">
+                        <div className="p-4 bg-gradient-to-b from-slate-200 from-40% via-cyan-600  to-cyan-900 shadow-sm shadow-cyan-400 rounded-lg h-96 w-96 lg:w-1/3 ">
                             <div className="w-6 h-6 ms-auto  rounded-sm text-red-500 hover:bg-red-500 hover:text-white transition-all ease-in-out duration-150 cursor-pointer">
                                 <RxCross2 className="w-full h-full " onClick={() => setAddFriendModal(false)} />
                             </div>
@@ -977,8 +1011,16 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                                     </div>
                                     <div className="w-1/2 py-2">
                                         <button
-                                            className="w-full h-10 bg-green-500 text-white font-bold tracking-wide active:bg-green-600 active:text-white transition-all ease-in-out duration-200 rounded-md hover:border border-green-500 hover:bg-white hover:text-green-500 hover:cursor-pointer"
-                                            onClick={sendRequest}>SEND REQUEST</button>
+                                            className="w-full h-10 bg-green-500 text-white font-bold tracking-wide active:bg-green-600 active:text-white transition-all ease-in-out duration-200 rounded-sm hover:shadow-lg shadow-black hover:border border-green-500 hover:bg-white hover:text-green-500 hover:cursor-pointer"
+                                            onClick={sendRequest}>
+                                                {
+                                                    sendingRequest ? (
+                                                        "SENDING REQUEST ..."
+                                                    ) : (
+                                                        "SEND REQUEST"
+                                                    )
+                                                }
+                                            </button>
                                     </div>
 
                                 </div>
