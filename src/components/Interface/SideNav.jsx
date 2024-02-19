@@ -9,6 +9,7 @@ import { MdLogout, MdOutlineEdit, MdSort } from "react-icons/md";
 import { IoMdCheckmark } from "react-icons/io";
 import { FaRegBell } from "react-icons/fa";
 import { HiSearch, HiOutlinePlus } from "react-icons/hi";
+import { FiHeart } from "react-icons/fi";
 
 
 import { doc, getDoc, getDocs, query, collection, where, setDoc, updateDoc } from "firebase/firestore";
@@ -950,7 +951,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                 {showFriendRequestModal && (
                     <div className="fixed inset-0 backdrop-filter backdrop-blur-sm flex justify-center items-center bg-gray-900 bg-opacity-50"
                     >
-                        <div className="bg-gradient-to-b from-slate-200 from-40% via-cyan-600  to-cyan-900 p-4 rounded-lg h-96 w-96 lg:w-1/3">
+                        <div className="bg-gradient-to-b from-slate-100 from-20% via-slate-300  to-gray-800 p-4 rounded-lg h-96 w-96 lg:w-1/3">
                             <div className="w-6 h-6 ms-auto rounded-sm text-red-500 hover:bg-red-500 hover:text-white transition-all ease-in-out duration-150 cursor-pointer                            ">
                                 <RxCross2 className="w-full h-full " onClick={() => setShowFriendRequestModal(false)} />
                             </div>
@@ -993,7 +994,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                 {addFriendModal && (
                     <div className="fixed inset-0 backdrop-filter backdrop-blur-sm flex justify-center items-center bg-gray-900 bg-opacity-50"
                     >
-                        <div className="p-4 bg-gradient-to-b from-slate-200 from-40% via-cyan-600  to-cyan-900 shadow-sm shadow-cyan-400 rounded-lg h-96 w-96 lg:w-1/3 ">
+                        <div className="p-4 bg-gradient-to-b from-slate-100 from-20% via-slate-300  to-gray-800 shadow-sm shadow-gray-900 rounded-lg h-96 w-96 lg:w-1/3 ">
                             <div className="w-6 h-6 ms-auto  rounded-sm text-red-500 hover:bg-red-500 hover:text-white transition-all ease-in-out duration-150 cursor-pointer">
                                 <RxCross2 className="w-full h-full " onClick={() => setAddFriendModal(false)} />
                             </div>
@@ -1038,23 +1039,23 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                     <div className="fixed  inset-0 backdrop-filter backdrop-blur-sm flex justify-center items-center bg-gray-900 bg-opacity-20 p-2"
                     >
                         
-                        <div className=" shadow-sm shadow-green-600 overflow-hidden py-2 md:p-4 h-2/3 w-96 lg:h-3/4 lg:w-2/3 bg-gradient-to-r from-5% from-slate-200 via-slate-600 to-gray-900 relative touch-none"
+                        <div className=" shadow-sm shadow-green-600 overflow-hidden py-2 md:p-4 h-2/3 w-96 md:w-2/3 lg:h-3/4 lg:w-3/4 xl:w-2/3 bg-gradient-to-t lg:bg-gradient-to-r from-15% from-slate-200 via-slate-600 to-gray-900 relative touch-none"
                         >
                             <div className="w-6 h-6 ms-auto rounded-sm text-red-500 hover:bg-red-500 hover:text-white transition-all ease-in-out duration-150 cursor-pointer">
                                 <RxCross2 className="w-full h-full " onClick={() => setShowInfoModal(false)} />
                             </div>
 
-                            <p className="absolute top-1 left-2 font-bold text-gray-600 underline">This website is built with 🖤 by,</p>
+                            <p className="absolute top-1 left-2 font-bold text-white lg:text-gray-600 underline ">This website is built with <FiHeart className="inline lg:text-black mx-1"/>  by,</p>
 
-                            <div className="text-center space-y-2 w-full h-full overflow-hidden py-2 lg:px-4 px-1 ">
+                            <div className="text-center  space-y-2 w-full h-full overflow-hidden py-2 lg:px-4 px-1 ">
 
-                                <div className="px-2 w-full flex md:flex-row flex-col  text-center justify-center items-center bg-gray-900 text-white py-4 md:rounded-md shadow-sm shadow-green-300 border-2 border-green-500  relative"
+                                <div className="px-2 w-full flex md:flex-row flex-col  text-center justify-center items-center  bg-gray-900 text-white py-8 md:py-4 rounded-md shadow-sm shadow-green-300 border md:border-2 border-green-500  relative"
                                 >
                                     <img src="https://res.cloudinary.com/dfsvudyfv/image/upload/v1708204036/WhatsApp_Image_2024-02-17_at_23.51.24_2a44ad68-removebg-preview_i4440k.png" 
-                                        className="rounded-full select-none w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 border-2 object-cover text-center md:absolute left-44 " alt="My_img"
+                                        className="rounded-full select-none w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 border-2 object-cover text-center top-6 absolute left-8 md:left-2 md:top-2 lg:left-4 lg:top-4 xl:left-24 xl:top-8 " alt="My_img"
                                         onContextMenu={(e) => e.preventDefault()} />
                                     <div className="space-y-2 mt-4">
-                                        <h1 className="font-semibold text-lg tracking-wider ">MUKESH S</h1>
+                                        <h1 className="font-semibold text-lg tracking-wider mb-6 sm:mb-4 md:mb-0">MUKESH S</h1>
                                         <h3 className="font-bold text-xl pb-2 lg:text-2xl">WEB DESIGN & DEVELOPER</h3>
                                         <p className="font-semibold text-md text-gray-400 ">
                                             SRI KRISHNA COLLEGE OF ENGINEERING AND TECHNOLOGY
@@ -1065,7 +1066,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                                 <div className="w-full h-full text-left overflow-y-auto ">
 
                                     <div
-                                        className="py-4 px-2 grid grid-cols-2 h-fit w-full mb-8">
+                                        className="py-4 px-2 lg:grid grid-cols-2 h-fit w-full mb-8">
 
                                         <div className=" " >
                                             <p className="font-semibold text-xl mb-2">TECH STACK USED:</p>
@@ -1106,7 +1107,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                                             </div>
                                         </div>
 
-                                        <div className="text-white  space-y-6">
+                                        <div className="md:text-white  space-y-6">
                                             <p className="font-semibold text-xl mb-2">TECH STACK OVERVIEW:</p>
 
                                             <div className="mb-2 text-center">
@@ -1114,7 +1115,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                                                     <h1 className="font-bold">REACT JS</h1>
                                                     <img src="" alt="react" className="w-6 h-6 bg-white rounded-full" />
                                                 </div>
-                                                <p className="w-11/12 text-gray-200">
+                                                <p className="w-11/12 md:text-gray-200">
                                                     JavaScript library for building user interfaces.
                                                     Component-based architecture for modular and reusable UI development.
                                                     Efficient updates through Virtual DOM and support for server-side rendering.
@@ -1126,7 +1127,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                                                     <h1 className="font-bold">FIREBASE</h1>
                                                     <img src="" alt="react" className="w-6 h-6 bg-white rounded-full" />
                                                 </div>
-                                                <p className="w-11/12 text-gray-200">
+                                                <p className="w-11/12 md:text-gray-200">
                                                     Google&apos;s platform for mobile and web app development.
                                                     Services include real-time database, authentication, hosting, and cloud functions.
                                                     Enables real-time data synchronization, secure user authentication, and scalable database solutions.
@@ -1139,7 +1140,7 @@ const SideNav = ({ ws, userData, currentUser, handleConversationWithFriend, onli
                                                     <img src="" alt="react" className="w-6 h-6 bg-white rounded-full" />
                                                 </div>
 
-                                                <p className="w-11/12 text-gray-200">
+                                                <p className="w-11/12 md:text-gray-200">
                                                     Communication protocol providing full-duplex channels over a single TCP connection.
                                                     Enables real-time, bidirectional data transfer between clients and servers.
                                                     Ideal for applications requiring frequent updates or real-time interactions like chat apps and online gaming.
